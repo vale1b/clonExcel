@@ -35,6 +35,17 @@
             width: 64px;
             height: 20px;
             vertical-align: middle;
+            position: relative;
+        }
+
+        span,
+        input {
+            position: absolute;
+            inset: 0;
+            vertical-align: middle;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
         }
 
         input {
@@ -55,6 +66,9 @@
         const range = length => Array.from({ length }, (_, i) => i)
         const getColumn = i => String.fromCharCode(FIRST_CHAR_CODE + i)
 
+        let STATE = range(COLUMNS)
+            .map(i => range(ROWS).map(j => ({ computedValue: 0, value: j })))
+
         const renderSpreadSheet = () => {
             const $table = $('table')
             const $head = $('thead')
@@ -72,8 +86,8 @@
                             <td>${row + 1}</td>
                             ${range(COLUMNS).map(column => `
                             <td data-x="${column}" data-y="${row}">
-                                <span></span>
-                                <input type="text" value="" />
+                                <span>${STATE[column][row].computedValue}</span>
+                                <input type="text" value="${STATE[column][row].value}" />
                             </td>
                              `).join('')}
                         </tr>`
